@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<title>UrbanFlow – أحذية رياضية بتقنية ثلاثية الأبعاد</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="UrbanFlow - أحذية رياضية مصممة للحركة، مبنية للمدينة.">
+<meta name="keywords" content="أحذية رياضية, أزياء, تقنية ثلاثية الأبعاد, تسوق إلكتروني">
+
+<style>
+/* ================= RESET & BASE STYLES ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #ffffff;
+  --secondary-color: #ff4d00;
+  --accent-color: #1e90ff;
+  --dark-color: #111111;
+  --bg-color: #0b0b0b;
+  --text-color: #ffffff;
+  --text-secondary: #aaa;
+  --border-color: #444;
+  --card-bg: rgba(30, 30, 30, 0.7);
+  --transition: all 0.3s ease;
+}
+
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ================= TYPOGRAPHY ================= */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+h2 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+}
+
+h3 {
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+}
+
+p {
+  font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+/* ================= CANVAS ================= */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ================= HEADER ================= */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px clamp(20px, 5vw, 60px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+  backdrop-filter: blur(5px);
+  transition: var(--transition);
+}
+
+.header.scrolled {
+  background: rgba(11, 11, 11, 0.95);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.logo span {
+  color: var(--secondary-color);
+}
+
+.nav {
+  display: flex;
+  gap: clamp(15px, 3vw, 28px);
+  align-items: center;
+}
+
+.nav a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transition);
+  position: relative;
+}
+
+.nav a:hover {
+  color: var(--primary-color);
+}
+
+.nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--secondary-color);
+  transition: var(--transition);
+}
+
+.nav a:hover::after {
+  width: 100%;
+}
+
+.nav-btn {
+  padding: 10px 26px;
+  border-radius: 30px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-color);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.nav-btn:hover {
+  background: var(--secondary-color);
+  border-color: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px;
+}
+
+/* ================= HERO SECTION ================= */
+.hero {
+  position: fixed;
+  top: 50%;
+  right: clamp(5%, 8vw, 10%);
+  transform: translateY(-50%);
+  max-width: min(420px, 90vw);
+  z-index: 20;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  text-align: right;
+}
+
+.hero h1 {
+  margin-bottom: 16px;
+  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+  font-size: 1.1rem;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.btn {
+  padding: 14px 28px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.btn.primary {
+  background: var(--primary-color);
+  color: var(--dark-color);
+}
+
+.btn.primary:hover {
+  background: var(--secondary-color);
+  color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 77, 0, 0.3);
+}
+
+.btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+
+.btn.secondary:hover {
+  border-color: var(--primary-color);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ================= PRODUCT LABELS ================= */
+.label {
+  position: fixed;
+  z-index: 25;
+  background: var(--card-bg);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.label.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ================= COLOR SELECTOR ================= */
+.colors-section {
+  position: fixed;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  background: var(--card-bg);
+  padding: 25px;
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  width: min(90vw, 500px);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.colors-section.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+  animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.colors-section h2 {
+  margin-bottom: 25px;
+  color: var(--primary-color);
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.colors {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.color {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+.color:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+.color.active {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--bg-color), 0 0 0 6px var(--primary-color);
+  transform: scale(1.1);
+}
+
+.color-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition);
+  margin-bottom: 8px;
+  z-index: 100;
+  font-weight: 500;
+}
+
+.color:hover .color-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ================= SCROLL SPACE ================= */
+.story {
+  height: 250vh;
+  position: relative;
+  z-index: 5;
+}
+
+/* ================= FEATURES SECTION ================= */
+.features {
+  position: relative;
+  z-index: 10;
+  padding: 120px clamp(5%, 10vw, 10%);
+  background: rgba(11, 11, 11, 0.95);
+  margin-top: -1px;
+  text-align: right;
+}
+
+.features .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.features h2 {
+  text-align: center;
+  margin-bottom: 60px;
+  color: var(--primary-color);
+  font-size: 2.5rem;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.feature-item {
+  padding: 40px 30px;
+  background: var(--card-bg);
+  border-radius: 20px;
+  border-right: 5px solid var(--secondary-color);
+  transition: var(--transition);
+  pointer-events: auto;
+  text-align: right;
+}
+
+.feature-item:hover {
+  transform: translateY(-10px) translateX(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.feature-item h3 {
+  margin-bottom: 20px;
+  color: var(--primary-color);
+  font-size: 1.8rem;
+}
+
+.feature-item p {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 15px;
+}
+
+.feature-divider {
+  height: 2px;
+  background: linear-gradient(to left, var(--secondary-color), transparent);
+  margin: 30px 0;
+  width: 100%;
+}
+
+/* ================= FOOTER ================= */
+.footer {
+  background: #000;
+  padding: 80px clamp(5%, 10vw, 10%) 40px;
+  position: relative;
+  z-index: 10;
+  text-align: right;
+}
+
+.footer .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+}
+
+.footer h4 {
+  margin-bottom: 20px;
+  color: var(--primary-color);
+  font-size: 1.3rem;
+}
+
+.footer p {
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.8;
+}
+
+.footer a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: var(--transition);
+  display: inline-block;
+  margin-bottom: 10px;
+  pointer-events: auto;
+}
+
+.footer a:hover {
+  color: var(--primary-color);
+  transform: translateX(-5px);
+}
+
+.footer-copy {
+  grid-column: 1 / -1;
+  margin-top: 40px;
+  font-size: 0.8rem;
+  color: #555;
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* ================= LOADING SCREEN ================= */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 3px solid transparent;
+  border-top: 3px solid var(--secondary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ================= RESPONSIVE DESIGN ================= */
+@media (max-width: 768px) {
+  .header {
+    padding: 15px 20px;
+  }
+  
+  .nav {
+    position: fixed;
+    top: 70px;
+    right: 0;
+    width: 100%;
+    background: rgba(11, 11, 11, 0.95);
+    backdrop-filter: blur(10px);
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 100;
+    text-align: right;
+  }
+  
+  .nav.active {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .mobile-menu-btn {
+    display: block;
+    z-index: 101;
+  }
+  
+  .hero {
+    right: 50%;
+    transform: translate(50%, -50%);
+    text-align: center;
+    width: 90%;
+    z-index: 20;
+  }
+  
+  .hero-buttons {
+    justify-content: center;
+  }
+  
+  .colors-section {
+    width: 95%;
+    padding: 20px;
+    bottom: 10%;
+    z-index: 90;
+  }
+  
+  .colors {
+    gap: 12px;
+  }
+  
+  .color {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .features {
+    padding: 80px 20px;
+    z-index: 10;
+    text-align: center;
+  }
+  
+  .feature-item {
+    text-align: center;
+    border-right: none;
+    border-bottom: 5px solid var(--secondary-color);
+  }
+  
+  .feature-item:hover {
+    transform: translateY(-10px);
+  }
+  
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    text-align: center;
+  }
+  
+  .footer a:hover {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .colors-section {
+    width: 80%;
+  }
+  
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* لمنع التمرير عندما تكون قائمة الألوان نشطة على الجوال */
+.no-scroll {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+/* ================= UTILITY CLASSES ================= */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.mb-40 {
+  margin-bottom: 40px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ================= CLICKABLE AREA FIX ================= */
+.color-area {
+  position: relative;
+  display: inline-block;
+}
+
+.color-area::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  z-index: -1;
+}
+
+/* ================= INTERACTION LAYERS ================= */
+.interaction-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 85;
+  display: none;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+}
+
+.interaction-layer.active {
+  display: block;
+}
+
+/* زر إغلاق قائمة الألوان */
+.close-colors {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.8rem;
+  cursor: pointer;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: var(--transition);
+  z-index: 95;
+}
+
+.close-colors:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--primary-color);
+  transform: rotate(90deg);
+}
+
+/* ================= FIX FOR OVERLAPPING ================= */
+.section-spacer {
+  height: 100vh;
+  position: relative;
+  z-index: 5;
+}
+
+/* زر إظهار/إخفاء ألوان للجوال */
+.toggle-colors-mobile {
+  display: none;
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  background: var(--secondary-color);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 25px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(255, 77, 0, 0.4);
+  transition: var(--transition);
+  font-size: 1rem;
+}
+
+.toggle-colors-mobile:hover {
+  background: #ff6b2d;
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 77, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+  .toggle-colors-mobile {
+    display: block;
+  }
+}
+
+/* زر دائري صغير للألوان */
+.color-selector-icon {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background: var(--secondary-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 50;
+  box-shadow: 0 5px 15px rgba(255, 77, 0, 0.4);
+  transition: var(--transition);
+  border: none;
+}
+
+.color-selector-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 25px rgba(255, 77, 0, 0.6);
+  background: #ff6b2d;
+}
+
+/* الفاصل بين الألوان */
+.color-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 25px 0;
+}
+
+/* رزمة الألوان */
+.color-pack {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.color-pack-title {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Loading Screen -->
+<div class="loading-screen" id="loadingScreen">
+  <div class="loader"></div>
+  <p>جاري تحميل المحتوى...</p>
+</div>
+
+<!-- طبقة تفاعل لمنع النقر على العناصر الأخرى -->
+<div class="interaction-layer" id="interactionLayer"></div>
+
+<!-- Header -->
+<header class="header" id="header">
+  <a href="#" class="logo">URBAN<span>FLOW</span></a>
+  
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="فتح القائمة">
+    ☰
+  </button>
+  
+  <nav class="nav" id="nav">
+    <a href="#home">الرئيسية</a>
+    <a href="#product">المنتج</a>
+    <a href="#features">الميزات</a>
+    <a href="#contact">اتصل بنا</a>
+    <button class="nav-btn" id="buyBtn">اشتري الآن</button>
+  </nav>
+</header>
+
+<!-- 3D Canvas -->
+<canvas id="scene"></canvas>
+
+<!-- Hero Section -->
+<div class="hero" id="hero">
+  <h1 class="fade-in-up">URBAN FLOW</h1>
+  <p class="fade-in-up">مصممة للحركة. مبنية للمدينة.</p>
+  <div class="hero-buttons">
+    <button class="btn primary" id="heroBuyBtn">اشتري الآن</button>
+    <a href="#features" class="btn secondary">استكشاف الميزات</a>
+  </div>
+</div>
+
+<!-- Product Labels -->
+<div class="label" id="l0">نعل</div>
+<div class="label" id="l1">منتصف النعل</div>
+<div class="label" id="l2">الجزء العلوي</div>
+<div class="label" id="l3">الأربطة</div>
+
+<!-- Color Selector -->
+<div class="colors-section" id="colors">
+  <button class="close-colors" id="closeColors" aria-label="إغلاق">×</button>
+  <h2>اختر لونك المفضل</h2>
+  
+  <div class="color-pack">
+    <div class="color-pack-title">الألوان الأساسية</div>
+    <div class="colors">
+      <div class="color-area">
+        <div class="color active" data-color="#ffffff" style="background:#fff">
+          <span class="color-tooltip">أبيض</span>
+        </div>
+      </div>
+      <div class="color-area">
+        <div class="color" data-color="#111111" style="background:#111">
+          <span class="color-tooltip">أسود</span>
+        </div>
+      </div>
+      <div class="color-area">
+        <div class="color" data-color="#cccccc" style="background:#cccccc">
+          <span class="color-tooltip">رمادي</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="color-divider"></div>
+  
+  <div class="color-pack">
+    <div class="color-pack-title">الألوان المميزة</div>
+    <div class="colors">
+      <div class="color-area">
+        <div class="color" data-color="#ff4d00" style="background:#ff4d00">
+          <span class="color-tooltip">برتقالي</span>
+        </div>
+      </div>
+      <div class="color-area">
+        <div class="color" data-color="#1e90ff" style="background:#1e90ff">
+          <span class="color-tooltip">أزرق</span>
+        </div>
+      </div>
+      <div class="color-area">
+        <div class="color" data-color="#4CAF50" style="background:#4CAF50">
+          <span class="color-tooltip">أخضر</span>
+        </div>
+      </div>
+      <div class="color-area">
+        <div class="color" data-color="#9C27B0" style="background:#9C27B0">
+          <span class="color-tooltip">بنفسجي</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="color-divider"></div>
+  
+  <button class="btn primary" id="colorsBuyBtn" style="width: 100%; padding: 15px; font-size: 1.1rem;">
+    أضف إلى السلة - $149.99
+  </button>
+</div>
+
+<!-- زر دائري لفتح الألوان -->
+<button class="color-selector-icon" id="colorSelectorIcon" title="تغيير اللون">
+  🎨
+</button>
+
+<!-- زر تبديل الألوان للجوال -->
+<button class="toggle-colors-mobile" id="toggleColorsMobile">تغيير اللون</button>
+
+<!-- Scroll Space for Animation -->
+<section class="story" id="story"></section>
+
+<!-- Section Spacer -->
+<div class="section-spacer"></div>
+
+<!-- Features Section -->
+<section class="features" id="features">
+  <div class="container">
+    <h2 class="fade-in-up">ميزات الحذاء</h2>
+    
+    <div class="feature-grid">
+      <div class="feature-item fade-in-up">
+        <h3>تصميم خفيف الوزن</h3>
+        <p>مصممة هندسياً لتقليل التعب وتعزيز الحركة.</p>
+        <p>مواد خفيفة الوزن مع متانة عالية.</p>
+        <div class="feature-divider"></div>
+        <p>وزن الحذاء: 250 جرام فقط</p>
+      </div>
+      
+      <div class="feature-item fade-in-up">
+        <h3>راحة تكيفية</h3>
+        <p>هيكل ديناميكي يتكيف مع كل خطوة.</p>
+        <p>نظام تهوية مبتكر للحفاظ على برودة القدمين.</p>
+        <div class="feature-divider"></div>
+        <p>7 مناطق دعم قوسي</p>
+      </div>
+      
+      <div class="feature-item fade-in-up">
+        <h3>متانة حضرية</h3>
+        <p>مبنية لحياة المدينة بمواد عالية الجودة.</p>
+        <p>مقاومة للماء ومصممة لتدوم طويلاً.</p>
+        <div class="feature-divider"></div>
+        <p>ضمان لمدة سنتين</p>
+      </div>
+      
+      <div class="feature-item fade-in-up">
+        <h3>دعم فائق</h3>
+        <p>نظام دعم قوسي متقدم لتوزيع الوزن بشكل متساوٍ.</p>
+        <p>وسائد هوائية لتقليل الصدمات.</p>
+        <div class="feature-divider"></div>
+        <p>تقليل الصدمات بنسبة 40%</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer" id="contact">
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <h4>URBANFLOW</h4>
+        <p>مصممة للحركة. مبنية للمدينة.</p>
+        <p>جودة عالية، تصميم عصري، راحة لا مثيل لها.</p>
+      </div>
+      
+      <div>
+        <h4>روابط سريعة</h4>
+        <a href="#home">الرئيسية</a><br>
+        <a href="#product">المنتج</a><br>
+        <a href="#features">الميزات</a><br>
+        <a href="#contact">اتصل بنا</a>
+      </div>
+      
+      <div>
+        <h4>المساعدة</h4>
+        <a href="#">الخصوصية</a><br>
+        <a href="#">الشروط والأحكام</a><br>
+        <a href="#">الدعم الفني</a><br>
+        <a href="#">الأسئلة الشائعة</a>
+      </div>
+      
+      <div>
+        <h4>تابعنا</h4>
+        <a href="#">إنستغرام</a><br>
+        <a href="#">تويتر</a><br>
+        <a href="#">فيسبوك</a><br>
+        <a href="#">يوتيوب</a>
+      </div>
+      
+      <div class="footer-copy">
+        © 2023 UrbanFlow. جميع الحقوق محفوظة.
+        <p>هذا موقع تجريبي لأغراض العرض فقط.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JavaScript Libraries -->
+<!-- إزالة الروابط المتكررة -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+
+<script>
+// ================= GLOBAL VARIABLES =================
+let isColorsSectionVisible = false;
+
+// ================= INITIALIZATION =================
+document.addEventListener('DOMContentLoaded', function() {
+  // Hide loading screen after 1.5 seconds
+  setTimeout(() => {
+    document.getElementById('loadingScreen').classList.add('hidden');
+  }, 1500);
+  
+  // Initialize everything
+  init3DScene();
+  initEventListeners();
+  initScrollAnimations();
+  initMobileMenu();
+  initColorSelector();
+  
+  // Add header scroll effect
+  window.addEventListener('scroll', handleHeaderScroll);
+  
+  // Show colors section after a delay for testing
+  setTimeout(() => {
+    window.showColorsSection();
+  }, 2000);
+});
+
+// ================= 3D SCENE =================
+function init3DScene() {
+  // Check if Three.js is loaded
+  if (typeof THREE === 'undefined') {
+    console.error('Three.js not loaded');
+    return;
+  }
+  
+  // Register GSAP ScrollTrigger
+  if (typeof gsap !== 'undefined' && gsap.registerPlugin) {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+  
+  const canvas = document.getElementById("scene");
+  if (!canvas) return;
+  
+  const hero = document.getElementById("hero");
+  
+  // Three.js Scene
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.set(0, 0, 4);
+  
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    alpha: true,
+    antialias: true
+  });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  
+  // Lighting
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  directionalLight.position.set(5, 10, 5);
+  directionalLight.castShadow = true;
+  directionalLight.shadow.mapSize.width = 2048;
+  directionalLight.shadow.mapSize.height = 2048;
+  scene.add(directionalLight);
+  
+  const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.5);
+  scene.add(hemisphereLight);
+  
+  // Shoe Parts
+  const group = new THREE.Group();
+  group.scale.set(0.5, 0.5, 0.5);
+  scene.add(group);
+  
+  const parts = [];
+  const baseY = [-0.5, -0.15, 0.25, 0.65];
+  const explodeY = [-1.2, -0.6, 0.6, 1.2];
+  const colors = [0x111111, 0x333333, 0xffffff, 0xdddddd];
+  const labels = ["l0", "l1", "l2", "l3"];
+  
+  // Create shoe parts
+  baseY.forEach((y, i) => {
+    const geometry = new THREE.BoxGeometry(1.6, [0.3, 0.25, 0.45, 0.15][i], 3);
+    const material = new THREE.MeshStandardMaterial({ 
+      color: colors[i],
+      roughness: 0.4,
+      metalness: 0.2
+    });
+    
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.y = y;
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    mesh.userData = { index: i, labelId: labels[i] };
+    
+    group.add(mesh);
+    parts.push(mesh);
+  });
+  
+  // Store parts globally for color change
+  window.shoeParts = parts;
+  
+  // Add subtle rotation animation
+  let time = 0;
+  function animateRotation() {
+    time += 0.005;
+    group.rotation.y = Math.sin(time) * 0.1;
+    group.rotation.x = Math.cos(time * 0.7) * 0.05;
+  }
+  
+  // Mouse interaction
+  let targetRotationX = 0;
+  let targetRotationY = 0;
+  let currentRotationX = 0;
+  let currentRotationY = 0;
+  
+  window.addEventListener("mousemove", (e) => {
+    targetRotationX = (e.clientY / window.innerHeight - 0.5) * 0.5;
+    targetRotationY = (e.clientX / window.innerWidth - 0.5) * 1;
+  });
+  
+  window.addEventListener("mouseleave", () => {
+    targetRotationX = 0;
+    targetRotationY = 0;
+  });
+  
+  // Render loop
+  function render() {
+    // Smooth rotation
+    currentRotationX += (targetRotationX - currentRotationX) * 0.05;
+    currentRotationY += (targetRotationY - currentRotationY) * 0.05;
+    
+    // Add subtle automatic rotation when mouse is not interacting
+    if (Math.abs(targetRotationX) < 0.01 && Math.abs(targetRotationY) < 0.01) {
+      animateRotation();
+    }
+    
+    group.rotation.x = currentRotationX;
+    group.rotation.y = currentRotationY;
+    
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+  }
+  render();
+  
+  // GSAP Scroll Animations
+  if (typeof gsap !== 'undefined') {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".story",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1,
+        markers: false
+      }
+    });
+    
+    // Hero fade out
+    tl.to(hero, {
+      opacity: 0,
+      x: 100,
+      duration: 0.3,
+      ease: "power2.in"
+    }, 0);
+    
+    // Explode parts
+    parts.forEach((part, i) => {
+      tl.to(part.position, {
+        y: baseY[i] + explodeY[i],
+        duration: 0.4,
+        ease: "power2.out"
+      }, 0.1);
+    });
+    
+    // Regroup parts
+    parts.forEach((part, i) => {
+      tl.to(part.position, {
+        y: baseY[i],
+        duration: 0.4,
+        ease: "power2.inOut"
+      }, "+=0.3");
+    });
+  }
+  
+  // Handle window resize
+  window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+}
+
+// ================= COLOR SELECTOR FUNCTIONS =================
+// Function to show colors section
+window.showColorsSection = function() {
+  const colorsSection = document.getElementById('colors');
+  const interactionLayer = document.getElementById('interactionLayer');
+  
+  if (colorsSection && interactionLayer) {
+    colorsSection.classList.add('active');
+    interactionLayer.classList.add('active');
+    isColorsSectionVisible = true;
+    
+    if (window.innerWidth <= 768) {
+      document.body.classList.add('no-scroll');
+    }
+  }
+};
+
+// Function to hide colors section
+window.hideColorsSection = function() {
+  const colorsSection = document.getElementById('colors');
+  const interactionLayer = document.getElementById('interactionLayer');
+  
+  if (colorsSection && interactionLayer) {
+    colorsSection.classList.remove('active');
+    interactionLayer.classList.remove('active');
+    isColorsSectionVisible = false;
+    document.body.classList.remove('no-scroll');
+  }
+};
+
+// Function to change shoe color
+function changeShoeColor(colorHex) {
+  if (window.shoeParts) {
+    const color = new THREE.Color(colorHex);
+    window.shoeParts.forEach(p => {
+      p.material.color.copy(color);
+    });
+  }
+}
+
+// ================= COLOR SELECTOR INITIALIZATION =================
+function initColorSelector() {
+  const colorsSection = document.getElementById('colors');
+  const interactionLayer = document.getElementById('interactionLayer');
+  const closeColorsBtn = document.getElementById('closeColors');
+  const toggleColorsMobileBtn = document.getElementById('toggleColorsMobile');
+  const colorSelectorIcon = document.getElementById('colorSelectorIcon');
+  const colorButtons = document.querySelectorAll('.color');
+  
+  // Handle color button clicks
+  colorButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      
+      // Update active color button
+      document.querySelectorAll('.color').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      // Change shoe color
+      const colorHex = btn.dataset.color;
+      changeShoeColor(colorHex);
+      
+      // Show confirmation
+      const tooltip = btn.querySelector('.color-tooltip');
+      if (tooltip) {
+        const originalText = tooltip.textContent;
+        tooltip.textContent = '✓ ' + originalText;
+        tooltip.style.background = 'rgba(76, 175, 80, 0.9)';
+        
+        setTimeout(() => {
+          tooltip.textContent = originalText;
+          tooltip.style.background = 'rgba(0, 0, 0, 0.9)';
+        }, 1000);
+      }
+      
+      // On mobile, hide after selection
+      if (window.innerWidth <= 768) {
+        setTimeout(window.hideColorsSection, 1500);
+      }
+    });
+  });
+  
+  // Close colors button
+  if (closeColorsBtn) {
+    closeColorsBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.hideColorsSection();
+    });
+  }
+  
+  // Toggle colors on mobile
+  if (toggleColorsMobileBtn) {
+    toggleColorsMobileBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isColorsSectionVisible) {
+        window.hideColorsSection();
+      } else {
+        window.showColorsSection();
+      }
+    });
+  }
+  
+  // Color selector icon
+  if (colorSelectorIcon) {
+    colorSelectorIcon.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.showColorsSection();
+    });
+  }
+  
+  // Handle interaction layer
+  if (interactionLayer) {
+    interactionLayer.addEventListener('click', window.hideColorsSection);
+  }
+  
+  // Handle buy button in colors section
+  const colorsBuyBtn = document.getElementById('colorsBuyBtn');
+  if (colorsBuyBtn) {
+    colorsBuyBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      alert('تمت إضافة المنتج إلى السلة بنجاح!');
+      window.hideColorsSection();
+    });
+  }
+  
+  // Initialize with white color
+  changeShoeColor('#ffffff');
+}
+
+// ================= EVENT LISTENERS =================
+function initEventListeners() {
+  // Buy buttons
+  const buyButtons = ['buyBtn', 'heroBuyBtn'];
+  buyButtons.forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) {
+      btn.addEventListener('click', () => {
+        alert('شكراً لاهتمامك! هذه صفحة تجريبية. في موقع حقيقي، سيتم توجيهك إلى صفحة الدفع.');
+      });
+    }
+  });
+}
+
+// ================= SCROLL ANIMATIONS =================
+function initScrollAnimations() {
+  // Check if GSAP is loaded
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+    console.warn('GSAP or ScrollTrigger not loaded');
+    return;
+  }
+  
+  // Animate features on scroll with delay
+  const featureItems = document.querySelectorAll('.feature-item');
+  
+  featureItems.forEach((item, index) => {
+    gsap.fromTo(item,
+      { 
+        opacity: 0, 
+        y: 50,
+        x: index % 2 === 0 ? -30 : 30
+      },
+      {
+        opacity: 1,
+        y: 0,
+        x: 0,
+        duration: 0.8,
+        delay: index * 0.1,
+        scrollTrigger: {
+          trigger: item,
+          start: "top 85%",
+          toggleActions: "play none none none"
+        }
+      }
+    );
+  });
+  
+  // Animate features title
+  gsap.fromTo('.features h2',
+    { opacity: 0, y: 30 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      scrollTrigger: {
+        trigger: '.features',
+        start: "top 90%",
+        toggleActions: "play none none none"
+      }
+    }
+  );
+}
+
+// ================= MOBILE MENU =================
+function initMobileMenu() {
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const nav = document.getElementById('nav');
+  
+  if (mobileMenuBtn && nav) {
+    mobileMenuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      nav.classList.toggle('active');
+      mobileMenuBtn.textContent = nav.classList.contains('active') ? '✕' : '☰';
+    });
+    
+    // Close menu when clicking on a link
+    nav.querySelectorAll('a, button').forEach(link => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('active');
+        mobileMenuBtn.textContent = '☰';
+      });
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!nav.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+        nav.classList.remove('active');
+        mobileMenuBtn.textContent = '☰';
+      }
+    });
+  }
+}
+
+// ================= HEADER SCROLL EFFECT =================
+function handleHeaderScroll() {
+  const header = document.getElementById('header');
+  if (window.scrollY > 100) {
+    header.classList.add('scrolled');
+  } else {
+    header.classList.remove('scrolled');
+  }
+}
+</script>
+</body>
+</html>
